@@ -54,9 +54,22 @@ const estimateRowHeight = (row: Row): number => {
   if (!row.message) return SEPARATOR_HEIGHT
 
   const { text, attachment } = row.message
-  const lines = Math.max(1, Math.ceil(text.length / CHARS_PER_LINE) + (attachment && text ? 1 : 0))
+  const textLines = text
+    ? text
+        .split('\n')
+        .reduce((sum, line) => sum + Math.max(1, Math.ceil(line.length / CHARS_PER_LINE)), 0)
+    : 0
+  const lines = Math.max(1, textLines + (attachment && text ? 1 : 0))
 
   return BUBBLE_HEIGHT + (lines - 1) * LINE_HEIGHT
+}
+
+// The first range of a chat is computed before the scroll box exists, from offset 0 by default:
+// it would render the oldest rows and leave the viewport at the end blank until a scroll event.
+// Start from the estimated end instead, with the window as an upper bound of the box height.
+const estimateEndOffset = (rows: Row[]) => {
+  const content = rows.reduce((sum, row) => sum + estimateRowHeight(row) + ROW_GAP, 0) - ROW_GAP
+  return Math.max(0, PADDING_BLOCK * 2 + content - window.innerHeight)
 }
 
 const StatusMark = ({ message }: { message: ChatMessage }) =>
@@ -115,7 +128,7 @@ const EmptyState = ({ chat, loading }: { chat: Chat; loading: boolean }) => (
   </div>
 )
 
-export const MessageList = ({ messages, chat, loading = false }: MessageListProps) => {
+const MessageRows = ({ chatId, messages }: { chatId: string; messages: ChatMessage[] }) => {
   const parentRef = useRef<HTMLDivElement>(null)
   const rows = useMemo(() => buildRows(messages), [messages])
 
@@ -123,7 +136,9 @@ export const MessageList = ({ messages, chat, loading = false }: MessageListProp
     count: rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: (index) => estimateRowHeight(rows[index]),
-    getItemKey: (index) => `${chat.chatId}:${rows[index].key}`,
+    getItemKey: (index) => `${chatId}:${rows[index].key}`,
+    initialOffset: () => estimateEndOffset(rows),
+    initialRect: { width: 0, height: window.innerHeight },
     anchorTo: 'end',
     followOnAppend: true,
     scrollEndThreshold: SCROLL_END_THRESHOLD,
@@ -134,22 +149,12 @@ export const MessageList = ({ messages, chat, loading = false }: MessageListProp
     useFlushSync: false,
   })
 
-  const hasMessages = messages.length > 0
-
   useLayoutEffect(() => {
     virtualizer.scrollToEnd()
-  }, [chat.chatId, hasMessages, virtualizer])
+  }, [virtualizer])
 
   const totalSize = virtualizer.getTotalSize()
   const shift = Math.max(0, (virtualizer.scrollRect?.height ?? 0) - totalSize)
-
-  if (messages.length === 0) {
-    return (
-      <div className={clsx(styles.messages, styles.messagesEmpty)}>
-        <EmptyState chat={chat} loading={loading} />
-      </div>
-    )
-  }
 
   return (
     <div ref={parentRef} className={styles.messages}>
@@ -195,3 +200,14 @@ export const MessageList = ({ messages, chat, loading = false }: MessageListProp
     </div>
   )
 }
+
+// The rows mount per chat and only once there are messages, so every chat opens with a fresh
+// virtualizer whose first range is already the end of the conversation.
+export const MessageList = ({ messages, chat, loading = false }: MessageListProps) =>
+  messages.length === 0 ? (
+    <div className={clsx(styles.messages, styles.messagesEmpty)}>
+      <EmptyState chat={chat} loading={loading} />
+    </div>
+  ) : (
+    <MessageRows key={chat.chatId} chatId={chat.chatId} messages={messages} />
+  )

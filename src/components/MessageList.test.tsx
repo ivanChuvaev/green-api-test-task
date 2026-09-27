@@ -156,6 +156,28 @@ describe('MessageList', () => {
     expect(rows.length).toBeLessThan(messages.length)
   })
 
+  it('opens a long chat on its latest messages, not on the oldest ones', () => {
+    const messages = Array.from({ length: 500 }, (_, index) =>
+      message({ id: `m${index}`, text: `Сообщение ${index}` }),
+    )
+
+    const { rerender } = render(<MessageList messages={messages} chat={chat} />)
+
+    expect(screen.getByText('Сообщение 499')).toBeInTheDocument()
+    expect(screen.queryByText('Сообщение 0')).not.toBeInTheDocument()
+
+    const other = { ...chat, chatId: `${chat.chatId}-other` }
+    const otherMessages = messages.map((item) => ({
+      ...item,
+      id: `o${item.id}`,
+      text: `Другой ${item.id}`,
+    }))
+    rerender(<MessageList messages={otherMessages} chat={other} />)
+
+    expect(screen.getByText('Другой m499')).toBeInTheDocument()
+    expect(screen.queryByText('Другой m0')).not.toBeInTheDocument()
+  })
+
   it('gives the row box the height of the pane, so a short chat sits at the bottom', () => {
     const { container } = render(<MessageList messages={[message({})]} chat={chat} />)
 

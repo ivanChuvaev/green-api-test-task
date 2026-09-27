@@ -198,7 +198,11 @@ the schema (`doc → paragraph+ → text*`, no marks) and `readPlainText(doc)`
 - Set `useFlushSync: false` in both (React 19 warns about `flushSync` in lifecycle
   methods); keep a generous `overscan`.
 - `MessageList` is end anchored: `anchorTo: 'end'`, `followOnAppend`,
-  `scrollEndThreshold: 80`, and `scrollToEnd()` on chat change. A chat shorter than
+  `scrollEndThreshold: 80`. The rows (`MessageRows`) mount per chat (`key` by
+  `chatId`) and only once there are messages, with `initialOffset` / `initialRect`
+  at the estimated end and `scrollToEnd()` on mount: a range computed from offset 0
+  (or from the previous chat's offset) renders the oldest rows and paints a blank
+  frame before jumping. The estimate counts line breaks. A chat shorter than
   the panel is pinned to the bottom by adding the height difference to every row's
   `top`. There is no "load older": `getChatHistory` has no offset.
 - `ChatList` items are exactly `68px`: fixed `estimateSize`, no `measureElement`.

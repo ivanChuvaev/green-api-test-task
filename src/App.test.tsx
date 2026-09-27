@@ -116,7 +116,7 @@ describe('App', () => {
 
     expect(await screen.findByText('Здесь появятся ваши диалоги')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Поиск чатов')).toBeInTheDocument()
-    expect(screen.queryByRole('textbox', { name: 'Напишите сообщение…' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('textbox', { name: 'Сообщение' })).not.toBeInTheDocument()
     expect(screen.queryByTitle('Отправить (Enter)')).not.toBeInTheDocument()
     expect(screen.queryByText('Контакт')).not.toBeInTheDocument()
   })
@@ -187,7 +187,7 @@ describe('App', () => {
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
     expect(checkAccount).toHaveBeenCalledWith(credentials, { phoneNumber: '79991234567' })
-    expect(screen.getByLabelText('Напишите сообщение…')).toBeInTheDocument()
+    expect(screen.getByLabelText('Сообщение')).toBeInTheDocument()
     expect(screen.getByText('Контакт')).toBeInTheDocument()
     expect(screen.getAllByText(formatPhone('79991234567'))).toHaveLength(2)
     expect(screen.getByText('Нет активных чатов')).toBeInTheDocument()

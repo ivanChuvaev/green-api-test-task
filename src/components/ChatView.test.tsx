@@ -47,7 +47,7 @@ describe('ChatView', () => {
 
     expect(screen.getByText(contactName)).toBeInTheDocument()
     expect(screen.getByText('Проверка отправки')).toBeInTheDocument()
-    expect(screen.getByLabelText('Напишите сообщение…')).toBeInTheDocument()
+    expect(screen.getByLabelText('Сообщение')).toBeInTheDocument()
   })
 
   it('keeps the pane in the grid but empty while no chat is selected', () => {
@@ -57,7 +57,7 @@ describe('ChatView', () => {
     expect(pane).toBeInTheDocument()
     expect(pane?.className).toMatch(/chatViewEmpty/)
     expect(pane).toHaveTextContent('Выберите чат или начните новый')
-    expect(screen.queryByLabelText('Напишите сообщение…')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Сообщение')).not.toBeInTheDocument()
   })
 
   it('drops the empty modifier once a chat is selected', () => {

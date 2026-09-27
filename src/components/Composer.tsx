@@ -5,7 +5,7 @@ import { Icon } from './Icon'
 import { MessageEditor, type MessageEditorHandle } from './MessageEditor'
 import styles from './Composer.module.scss'
 
-const PLACEHOLDER = 'Напишите сообщение…'
+const PLACEHOLDER = 'Сообщение'
 
 interface ComposerProps {
   onSend: (text: string) => Promise<void>

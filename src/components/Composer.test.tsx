@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { MAX_MESSAGE_LENGTH } from '../api/greenApi'
 import { Composer } from './Composer'
 
-const field = (name = 'Напишите сообщение…') => screen.getByRole('textbox', { name })
+const field = (name = 'Сообщение') => screen.getByRole('textbox', { name })
 const sendButton = () => screen.getByTitle('Отправить (Enter)')
 
 const paste = (text: string) => fireEvent.paste(field(), { clipboardData: { getData: () => text } })

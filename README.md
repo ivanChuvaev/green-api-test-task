@@ -16,9 +16,6 @@ SCSS Modules, `@tanstack/react-virtual`, ProseMirror (поле ввода),
 ```bash
 pnpm install
 pnpm dev         # http://localhost:5173
-pnpm build       # tsc -b + сборка в dist/
-pnpm test        # Vitest
-pnpm lint        # oxlint + stylelint
 ```
 
 ## Деплой

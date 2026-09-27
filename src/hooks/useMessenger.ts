@@ -60,14 +60,34 @@ const sleep = (ms: number) => new Promise((resolve) => window.setTimeout(resolve
 
 const isAbort = (error: unknown) => error instanceof DOMException && error.name === 'AbortError'
 
-const USERNAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_]{4,31}$/
+const USERNAME_MIN_LENGTH = 5
+const USERNAME_MAX_LENGTH = 32
+const USERNAME_PATTERN = new RegExp(
+  `^[a-zA-Z][a-zA-Z0-9_]{${USERNAME_MIN_LENGTH - 1},${USERNAME_MAX_LENGTH - 1}}$`,
+)
 
 export const PHONE_EXAMPLE = '+7 (000) 000-00-00'
 export const USERNAME_EXAMPLE = '@username'
 
-export const INVALID_TARGET_MESSAGE = `Введите номер в международном формате (${PHONE_EXAMPLE}) или имя пользователя (${USERNAME_EXAMPLE})`
+const INVALID_TARGET_MESSAGE = `Введите номер в международном формате (${PHONE_EXAMPLE}) или имя пользователя (${USERNAME_EXAMPLE})`
 
-export const TARGET_NOT_FOUND_MESSAGE = `Аккаунт с номером ${PHONE_EXAMPLE} или именем ${USERNAME_EXAMPLE} не найден`
+export const TARGET_NOT_FOUND_MESSAGE = 'Аккаунт не найден'
+
+/** Why `parseAccountTarget` refuses the value: the rule of a username it breaks. */
+export const accountTargetError = (value: string): string => {
+  const trimmed = value.trim()
+  if (!trimmed.startsWith('@')) return INVALID_TARGET_MESSAGE
+
+  const username = trimmed.slice(1)
+  if (!/^[a-zA-Z]/.test(username)) return 'Имя пользователя должно начинаться с латинской буквы'
+  if (/[^a-zA-Z0-9_]/.test(username)) {
+    return 'Имя пользователя может содержать только латинские буквы, цифры и _'
+  }
+  if (username.length < USERNAME_MIN_LENGTH) {
+    return `Имя пользователя должно быть не короче ${USERNAME_MIN_LENGTH} символов`
+  }
+  return `Имя пользователя должно быть не длиннее ${USERNAME_MAX_LENGTH} символов`
+}
 
 export const parseAccountTarget = (value: string): AccountTarget | null => {
   const trimmed = value.trim()
@@ -446,7 +466,7 @@ export const useMessenger = (credentials: Credentials): MessengerApi => {
   const findChat = useCallback(
     async (input: string): Promise<Chat> => {
       const target = parseAccountTarget(input)
-      if (!target) throw new Error(INVALID_TARGET_MESSAGE)
+      if (!target) throw new Error(accountTargetError(input))
 
       const digits = 'phoneNumber' in target ? target.phoneNumber : ''
       const username = 'username' in target ? target.username : ''

@@ -1,6 +1,6 @@
 import { Button, Input } from '@maxhub/max-ui'
 import { useState, type SubmitEvent } from 'react'
-import { INVALID_TARGET_MESSAGE, parseAccountTarget } from '../hooks/useMessenger'
+import { accountTargetError, parseAccountTarget } from '../hooks/useMessenger'
 import styles from './NewChatForm.module.scss'
 
 interface NewChatFormProps {
@@ -18,7 +18,7 @@ export const NewChatForm = ({ onFind, onCancel }: NewChatFormProps) => {
   const submit = async (event: SubmitEvent) => {
     event.preventDefault()
     if (!parseAccountTarget(target)) {
-      setError(INVALID_TARGET_MESSAGE)
+      setError(accountTargetError(target))
       return
     }
 

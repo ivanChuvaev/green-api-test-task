@@ -24,7 +24,19 @@ describe('NewChatModal', () => {
     await user.type(field(), '@abc')
     await user.click(find())
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('@username')
+    expect(await screen.findByRole('alert')).toHaveTextContent('не короче 5 символов')
+
+    await user.clear(field())
+    await user.type(field(), '@1user')
+    await user.click(find())
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('начинаться с латинской буквы')
+
+    await user.clear(field())
+    await user.type(field(), '@user-name')
+    await user.click(find())
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('латинские буквы, цифры и _')
     expect(onFind).not.toHaveBeenCalled()
   })
 

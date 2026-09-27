@@ -1056,7 +1056,7 @@ describe('useMessenger', () => {
       await expect(result.current.findChat('123')).rejects.toThrow(/\+7 \(000\) 000-00-00/)
     })
     await act(async () => {
-      await expect(result.current.findChat('@abc')).rejects.toThrow(/@username/)
+      await expect(result.current.findChat('@abc')).rejects.toThrow(/не короче 5 символов/)
     })
     expect(checkAccount).not.toHaveBeenCalled()
   })

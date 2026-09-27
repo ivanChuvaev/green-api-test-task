@@ -1,0 +1,72 @@
+@use '../styles/mixins' as *;
+
+.chatProfile {
+  gap: 20px;
+  padding: 24px 20px;
+  background: var(--background-primary);
+  border-left: 1px solid var(--divider-primary);
+  overflow-y: auto;
+
+  @include scrollbar;
+
+  &.chatProfileEmbedded {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-left: 0;
+    overflow: visible;
+  }
+
+  .chatProfileBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .chatProfileAvatar {
+    display: grid;
+    place-items: center;
+  }
+
+  .chatProfileName {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .chatProfileSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--divider-primary);
+  }
+
+  .chatProfileHeading {
+    margin: 0;
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+
+  .chatProfileRow {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .chatProfileLabel {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatProfileValue {
+    font-size: var(--font-size-sm);
+    overflow-wrap: anywhere;
+  }
+}

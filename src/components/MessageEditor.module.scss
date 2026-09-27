@@ -1,0 +1,26 @@
+.editorHost {
+  min-width: 0;
+}
+
+.editor {
+  min-height: 68px;
+  max-height: 140px;
+  padding: 24px 16px;
+  overflow-y: auto;
+  color: var(--text-primary);
+  font-family: var(--family-base);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  outline: none;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  & p {
+    margin: 0;
+  }
+}

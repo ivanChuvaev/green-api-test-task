@@ -1,0 +1,39 @@
+@use '../styles/mixins' as *;
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.shell {
+  height: 100%;
+  display: grid;
+  grid-template-columns: var(--chat-list-width) minmax(0, 1fr) var(--chat-profile-width);
+  overflow: hidden;
+
+  @include below($breakpoint-info) {
+    grid-template-columns: 300px minmax(0, 1fr);
+
+    & > .pane[data-pane='chatProfile'] {
+      display: none;
+    }
+  }
+
+  @include below($breakpoint-compact) {
+    grid-template-columns: minmax(0, 1fr);
+
+    & > .pane[data-pane='chatView'] {
+      display: none;
+    }
+
+    &.shellChatOpen > .pane[data-pane='chatList'] {
+      display: none;
+    }
+
+    &.shellChatOpen > .pane[data-pane='chatView'] {
+      display: flex;
+    }
+  }
+}

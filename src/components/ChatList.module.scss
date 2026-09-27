@@ -1,0 +1,225 @@
+@use '../styles/mixins' as *;
+
+.chatList {
+  background: var(--background-primary);
+  border-right: 1px solid var(--divider-primary);
+
+  .chatListHeader {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 20px;
+  }
+
+  .chatListAccount {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chatListIdentity {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .chatListName {
+    @include clamp-lines(1);
+
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+
+  .chatListPhone {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatListSearch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    height: 52px;
+    margin: 4px 12px 10px;
+    padding: 0 16px;
+    border-radius: var(--size-border-radius-action-large, 16px);
+    background: var(--background-secondary);
+    color: var(--icon-quaternary);
+
+    &:focus-within {
+      @include focus-ring;
+    }
+  }
+
+  .chatListInput {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+    -webkit-appearance: none;
+    appearance: none;
+
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+  }
+
+  .chatListClear {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--icon-tertiary);
+    cursor: pointer;
+    transition:
+      background var(--duration-fast) ease,
+      color var(--duration-fast) ease;
+
+    &:hover {
+      background: var(--controls-active);
+      color: #fff;
+    }
+  }
+
+  .chatListScroll {
+    flex: 1;
+    min-height: 0;
+    padding: 0 8px 8px;
+    overflow-y: auto;
+
+    @include scrollbar;
+  }
+
+  .chatListItems {
+    position: relative;
+  }
+
+  .chatListEmpty {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatListFooter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--divider-primary);
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+}
+
+.chatItemSlot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.chatItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease;
+
+  &:hover {
+    background: var(--controls-inactive);
+  }
+
+  &.chatItemActive {
+    background: var(--controls-active);
+
+    .chatItemTitle {
+      color: #fff;
+    }
+
+    .chatItemTime {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .chatItemPreview {
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .chatItemRow {
+      color: rgba(255, 255, 255, 0.72);
+    }
+  }
+
+  .chatItemBody {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .chatItemRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    color: var(--text-tertiary);
+  }
+
+  .chatItemTitle {
+    @include clamp-lines(1);
+
+    flex: 1;
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+
+  .chatItemTime {
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatItemPreview {
+    @include clamp-lines(1);
+
+    flex: 1;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatItemUnread {
+    flex-shrink: 0;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    background: var(--max-accent);
+    color: #fff;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+}

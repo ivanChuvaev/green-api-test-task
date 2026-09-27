@@ -1,0 +1,28 @@
+@use '../styles/mixins' as *;
+
+.page {
+  position: relative;
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f6f5ff 0%, #edeeff 100%);
+
+  .pageGlow {
+    position: absolute;
+    inset: -30% -10% auto -10%;
+    height: 70%;
+    opacity: 0.35;
+    background: var(--max-gradient);
+    filter: blur(90px);
+  }
+
+  @include dark-scheme {
+    background: var(--max-brand-dark);
+
+    .pageGlow {
+      opacity: 0.45;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@use '../styles/mixins' as *;
+
+.chatView {
+  background: var(--chat-bg);
+  background-image: var(--chat-bg-accent);
+
+  @include dark-scheme {
+    background: #141220;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(110, 26, 255, 0.22), transparent 45%),
+      radial-gradient(circle at 85% 10%, rgba(0, 191, 255, 0.12), transparent 40%);
+  }
+
+  &.chatViewEmpty {
+    grid-column: 2 / -1;
+    align-items: center;
+    justify-content: center;
+
+    @include below($breakpoint-compact) {
+      grid-column: auto;
+    }
+  }
+
+  .chatViewHint {
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(13, 0, 26, 0.25);
+    color: #fff;
+    font-size: var(--font-size-sm);
+
+    @include dark-scheme {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+}

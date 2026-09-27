@@ -1,0 +1,92 @@
+# Lint, test and build every push and pull request; deploy `main` to
+# Cloudflare Workers (static assets from `dist/`, see `wrangler.jsonc`).
+#
+# Deploying needs two repository secrets:
+#   CLOUDFLARE_API_TOKEN  – token with the "Edit Cloudflare Workers" template
+#   CLOUDFLARE_ACCOUNT_ID – account id from the Cloudflare dashboard
+# Without them the deploy step is skipped with a warning.
+#
+# The e2e suite is not run here: it needs a real instance from `.env`.
+
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Version comes from `packageManager` in package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Check Cloudflare secrets
+        id: secrets
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID are not set, skipping deploy"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy with Wrangler
+        id: deploy
+        if: steps.secrets.outputs.ok == 'true'
+        shell: bash # -o pipefail, so a failed deploy fails the step despite `tee`
+        run: |
+          pnpm dlx wrangler@4 deploy | tee deploy.log
+          url=$(grep -oE 'https://[^ ]+\.workers\.dev' deploy.log | head -n 1 || true)
+          echo "url=$url" >> "$GITHUB_OUTPUT"

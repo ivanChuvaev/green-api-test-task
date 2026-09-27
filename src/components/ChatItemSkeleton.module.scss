@@ -1,0 +1,129 @@
+@use '../styles/mixins' as *;
+
+@keyframes chatItemSkeletonShimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@mixin chatItemSkeletonShape {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--background-secondary);
+
+  @media (prefers-reduced-motion: no-preference) {
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: translateX(-100%);
+      animation: chatItemSkeletonShimmer 1.4s var(--ease-out) infinite;
+      animation-delay: var(--shimmer-delay, 0s);
+    }
+  }
+}
+
+.chatItemSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.chatItemSkeletonAvatar {
+  @include chatItemSkeletonShape;
+
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.chatItemSkeletonBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chatItemSkeletonLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.chatItemSkeletonName {
+  @include chatItemSkeletonShape;
+
+  flex: 1;
+  height: 12px;
+}
+
+.chatItemSkeletonTime {
+  @include chatItemSkeletonShape;
+
+  flex-shrink: 0;
+  width: 34px;
+  height: 10px;
+}
+
+.chatItemSkeletonPreview {
+  @include chatItemSkeletonShape;
+
+  width: 80%;
+  height: 12px;
+}
+
+.chatItemSkeletonAccount {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.chatItemSkeletonAccountAvatar {
+  @include chatItemSkeletonShape;
+
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.chatItemSkeletonAccountBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chatItemSkeletonAccountName {
+  @include chatItemSkeletonShape;
+
+  width: 55%;
+  height: 13px;
+}
+
+.chatItemSkeletonAccountPhone {
+  @include chatItemSkeletonShape;
+
+  width: 40%;
+  height: 11px;
+}
+
+@for $row from 2 through 12 {
+  .chatItemSkeleton:nth-child(#{$row}) {
+    --shimmer-delay: #{$row * 60}ms;
+  }
+}

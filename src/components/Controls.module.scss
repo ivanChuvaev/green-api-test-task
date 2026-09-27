@@ -1,0 +1,33 @@
+.iconButton {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--icon-tertiary);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+
+  &:hover {
+    background: var(--controls-active);
+    color: #fff;
+  }
+}
+
+.linkButton {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--max-accent);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

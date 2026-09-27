@@ -1,0 +1,42 @@
+$breakpoint-info: 1180px;
+$breakpoint-compact: 760px;
+
+@mixin below($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin dark-scheme {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+@mixin scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--icon-quaternary) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--icon-quaternary);
+    border-radius: var(--radius-pill);
+  }
+}
+
+// Sass `rgba()` cannot take a custom property, so the ring is mixed in CSS.
+@mixin focus-ring($color: var(--max-brand-blue)) {
+  outline: 2px solid color-mix(in srgb, #{$color} 50%, transparent);
+  outline-offset: 2px;
+}
+
+@mixin clamp-lines($lines: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}

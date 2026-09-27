@@ -1,0 +1,29 @@
+@use '../styles/mixins' as *;
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 17px;
+
+  .bannerText {
+    overflow-wrap: anywhere;
+  }
+
+  &.bannerMuted {
+    flex-direction: row;
+    align-items: center;
+    color: var(--text-tertiary);
+  }
+
+  &.bannerWarning {
+    color: var(--max-attention);
+  }
+
+  &.bannerError {
+    color: var(--max-danger);
+  }
+}

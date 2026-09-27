@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local environment with the GREEN-API test credentials, `.env.example` is committed
+.env
+
+# Playwright artefacts from failed e2e runs
+e2e/.artifacts
+test-results
+playwright-report
+
+# husky generated shims, restored by `pnpm install`
+.husky/_
+
+# wrangler local state (`.wrangler/`, logs)
+.wrangler

@@ -1,0 +1,184 @@
+@use '../styles/mixins' as *;
+
+.messages {
+  flex: 1;
+  min-height: 0;
+  padding: 0 24px;
+  overflow-y: auto;
+
+  @include scrollbar;
+
+  .messagesInner {
+    position: relative;
+  }
+
+  @include below($breakpoint-compact) {
+    padding: 0 16px;
+  }
+
+  &.messagesEmpty {
+    display: grid;
+    place-items: center;
+    padding: 20px 24px;
+
+    @include below($breakpoint-compact) {
+      padding: 16px;
+    }
+  }
+}
+
+.emptyCard {
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--text-secondary);
+
+  .emptyCardMark {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background: var(--max-gradient);
+    color: #fff;
+  }
+
+  .emptyCardSpinner {
+    display: grid;
+    place-items: center;
+    min-height: 56px;
+  }
+
+  .emptyCardTitle {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+  }
+
+  .emptyCardText {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 20px;
+  }
+}
+
+.daySeparator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 6px;
+
+  .daySeparatorLabel {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(13, 0, 26, 0.25);
+    color: #fff;
+    font-size: var(--font-size-sm);
+
+    @include dark-scheme {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+.bubbleRow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+
+  &.bubbleRowIn {
+    justify-content: flex-start;
+  }
+
+  &.bubbleRowOut {
+    justify-content: flex-end;
+  }
+}
+
+.bubble {
+  max-width: min(var(--content-max-width), 78%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px 6px;
+  border-radius: var(--radius-md);
+  background: var(--bubble-in);
+  color: var(--text-primary);
+  box-shadow: var(--bubble-shadow);
+
+  @include dark-scheme {
+    background: #262338;
+    box-shadow: none;
+  }
+
+  @include below($breakpoint-compact) {
+    max-width: 88%;
+  }
+
+  .bubbleText {
+    font-size: var(--font-size-sm);
+    line-height: 20px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .bubbleAttachment {
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    line-height: 20px;
+    opacity: 0.75;
+  }
+
+  .bubbleLink {
+    color: var(--max-accent);
+    overflow-wrap: anywhere;
+  }
+
+  .bubbleMeta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    align-self: flex-end;
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    line-height: 14px;
+  }
+
+  .bubbleTime {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.bubbleRowIn .bubble {
+  border-bottom-left-radius: 6px;
+
+  .bubbleMeta {
+    color: var(--text-tertiary);
+  }
+}
+
+.bubbleRowOut .bubble {
+  border-bottom-right-radius: 6px;
+  background: var(--max-gradient-soft);
+  color: #fff;
+
+  @include dark-scheme {
+    background: var(--max-gradient-soft);
+  }
+
+  .bubbleMeta {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .bubbleLink {
+    color: inherit;
+  }
+}

@@ -1,0 +1,6 @@
+# pnpm 11 refuses to run (or silently skip) dependency build scripts unless they
+# are listed here. `@parcel/watcher` is a native file watcher used for dev-time
+# change detection only — it is not needed to compile SCSS, so its install
+# script stays disabled and the build does not depend on it.
+allowBuilds:
+  '@parcel/watcher': false

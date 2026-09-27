@@ -1,0 +1,8 @@
+dist
+node_modules
+coverage
+pnpm-lock.yaml
+.husky
+e2e/.artifacts
+playwright-report
+test-results

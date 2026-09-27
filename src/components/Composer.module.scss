@@ -1,0 +1,57 @@
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--background-primary);
+  border-top: 1px solid var(--divider-primary);
+
+  .composerField {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .composerPlaceholder {
+    position: absolute;
+    inset: 24px auto auto 16px;
+    color: var(--text-secondary);
+    pointer-events: none;
+  }
+
+  .composerCounter {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+
+    &.composerCounterOver {
+      color: var(--max-danger);
+    }
+  }
+
+  .composerSend {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    margin-right: 16px;
+    border: none;
+    border-radius: 50%;
+    background: var(--max-gradient);
+    color: white;
+    cursor: pointer;
+    transition:
+      transform 0.12s ease,
+      opacity 0.12s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}

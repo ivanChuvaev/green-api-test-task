@@ -1,0 +1,9 @@
+.messageStatus {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  &.messageStatusFailed {
+    color: var(--max-danger);
+  }
+}

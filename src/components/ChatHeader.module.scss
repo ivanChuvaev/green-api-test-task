@@ -1,0 +1,75 @@
+@use '../styles/mixins' as *;
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--background-primary);
+  border-bottom: 1px solid var(--divider-primary);
+
+  .chatHeaderProfile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+  }
+
+  .chatHeaderInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .chatHeaderTitle {
+    @include clamp-lines(1);
+
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
+
+  .chatHeaderSubtitle {
+    @include clamp-lines(1);
+
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+
+  .chatHeaderBack {
+    display: none;
+
+    @include below($breakpoint-compact) {
+      display: grid;
+      margin-left: -8px;
+    }
+  }
+}
+
+.status {
+  &.statusConnecting {
+    color: var(--text-tertiary);
+  }
+
+  &.statusOnline {
+    color: var(--max-success);
+  }
+
+  &.statusError {
+    color: var(--max-danger);
+  }
+
+  &.statusUnauthorized {
+    color: var(--max-attention);
+  }
+}
